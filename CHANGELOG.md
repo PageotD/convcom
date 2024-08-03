@@ -6,9 +6,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
-## [X.Y.Z] - YYYY-MM-DD
+## [0.1.0] - YYYY-MM-DD
+* fix: correct the git commit system call
 
-**-- INITIAL RELEASE --**
+## [0.0.0] - 2024-08-03
+
+**-- INITIAL COMMIT --**
 
 ## [X.Y.Z] - YYYY-MM-DD
  

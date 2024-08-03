@@ -187,13 +187,13 @@ func (c Choices) commitAndPush(dryrun bool) error {
 	fmt.Printf("\033[2J\033[H")
 	fmt.Printf("\033[4;37m\033[1;37mConventional Commit\033[0m\033[0m\n\n")
 	fmt.Printf("* \033[46m%s\033[0m\033[42m%s\033[0m\033[41m%s\033[0m: %s\n\n", c.TypeChoice, c.ScopeChoice, c.BreakChoice, c.CommitMessage)
-	commit := fmt.Sprintf("Commit ... %s%s%s: %s\n", c.TypeChoice, c.ScopeChoice, c.BreakChoice, c.CommitMessage)
+	commit := fmt.Sprintf("%s%s%s: %s", c.TypeChoice, c.ScopeChoice, c.BreakChoice, c.CommitMessage)
 	if dryrun {
-		fmt.Printf(commit)
+		fmt.Printf("Commit ... "+commit+"\n")
 		return nil
 	} 
 	
-	commitCmd := exec.Command("git", "commit", "-am", commit)
+	commitCmd := exec.Command("git", "commit", "-am", string(commit))
 	if err := commitCmd.Run(); err != nil {
 		return fmt.Errorf("failed to commit changes: %w", err)
 	}
