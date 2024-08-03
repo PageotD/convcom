@@ -1,0 +1,21 @@
+{
+  "types": [
+    "build",
+    "ci",
+    "chore",
+    "docs",
+    "feat",
+    "fix",
+    "perf",
+    "refactor",
+    "revert",
+    "style",
+    "test"
+  ],
+  "scopes": [
+    "frontend",
+    "backend",
+    "api",
+    "database"
+  ]
+}
