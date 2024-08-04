@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [0.1.0] - YYYY-MM-DD
 * fix: correct the git commit system call
+* refactor: extracts configuration-related functions into a new source file
 
 ## [0.0.0] - 2024-08-03
 
