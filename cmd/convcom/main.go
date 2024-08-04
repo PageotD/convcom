@@ -4,8 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"golang.org/x/term"
-	"encoding/json"
-	"io/ioutil"
 	"log"
 	"bufio"
 	"os"
@@ -21,25 +19,6 @@ var enter byte = 13
 var keys = map[byte]bool {
 	up: true,
 	down: true,
-}
-
-type Config struct {
-    Types   []string `json:"types"`
-    Scopes  []string `json:"scopes"`
-}
-
-func loadConfig() (*Config, error) {
-    data, err := ioutil.ReadFile("convcom.json")
-    if err != nil {
-        return nil, err
-    }
-    
-    var config Config
-    if err := json.Unmarshal(data, &config); err != nil {
-        return nil, err
-    }
-    
-    return &config, nil
 }
 
 type Menu struct {
@@ -223,38 +202,6 @@ func (c Choices) renderCommit() {
 	} else {
 	fmt.Printf("* \033[46m%s\033[0m\033[42m%s\033[0m\033[41m%s\033[0m: %s\n\n", c.TypeChoice, c.ScopeChoice, c.BreakChoice, c.CommitMessage)
 	}
-}
-
-// createConfigFile creates a config file with the specified name if it does not already exist.
-func createConfigFile() error {
-	fileName := "convcom.json"
-	// Check if the file already exists
-	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
-		return fmt.Errorf("config file %s already exists", fileName)
-	}
-
-	// Define the configuration data
-	config := Config{
-		Types:  []string{"build", "ci", "chore", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"},
-		Scopes: []string{},
-	}
-
-	// Open the file for writing
-	file, err := os.Create(fileName)
-	if err != nil {
-		return fmt.Errorf("failed to create config file: %w", err)
-	}
-	defer file.Close()
-
-	// Encode the config to JSON
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ") // Pretty print with indent
-	if err := encoder.Encode(config); err != nil {
-		return fmt.Errorf("failed to write config to file: %w", err)
-	}
-
-	fmt.Printf("Config file %s created successfully.\n", fileName)
-	return nil
 }
 
 func main() {

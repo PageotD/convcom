@@ -12,10 +12,5 @@
     "style",
     "test"
   ],
-  "scopes": [
-    "frontend",
-    "backend",
-    "api",
-    "database"
-  ]
+  "scopes": []
 }
