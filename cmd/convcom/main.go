@@ -161,22 +161,29 @@ func getInput() byte {
 }
 
 // commitAndPush creates a Git commit with the provided message and pushes it to the remote repository.
-func (c Choices) commitAndPush(dryrun bool) error {
+func (c Choices) commitAndPush(push string, dryrun bool) error {
 	// Execute git commit
 	fmt.Printf("\033[2J\033[H")
 	fmt.Printf("\033[4;37m\033[1;37mConventional Commit\033[0m\033[0m\n\n")
 	fmt.Printf("* \033[46m%s\033[0m\033[42m%s\033[0m\033[41m%s\033[0m: %s\n\n", c.TypeChoice, c.ScopeChoice, c.BreakChoice, c.CommitMessage)
 	commit := fmt.Sprintf("%s%s%s: %s", c.TypeChoice, c.ScopeChoice, c.BreakChoice, c.CommitMessage)
-	if dryrun {
-		fmt.Printf("Commit ... "+commit+"\n")
-		return nil
-	} 
 	
 	commitCmd := exec.Command("git", "commit", "-am", string(commit))
 	if err := commitCmd.Run(); err != nil {
 		return fmt.Errorf("failed to commit changes: %w", err)
+	} else if dryrun {
+		fmt.Printf("Commit '%s' simulated successfully.\n", commit)
+	} else {
+		fmt.Printf("Commit '%s' created successfully.\n", commit)
 	}
 
+	if push == "yes" {
+		fmt.Printf("Fake push here")
+		//pushCmd := exec.Command("git", "push")
+		//if err := pushCmd.Run(); err != nil {
+		//	return fmt.Errorf("failed to push changes: %w", err)
+		//}
+	}
 	// Execute git push
 	//pushCmd := exec.Command("git", "push")
 	//if err := pushCmd.Run(); err != nil {
@@ -260,13 +267,15 @@ func main() {
 
 			choices.renderCommit()
 
-			menuCommit := NewMenu("Push?")
+			menuCommit := NewMenu("Commit & Push?")
 
 			menuCommit.AddItem("no", "no")
 			menuCommit.AddItem("yes", "yes")
+			menuCommit.AddItem("commit only", "commit")
 
-			if menuCommit.Display() == "yes" {
-				choices.commitAndPush(*dryrunFlag)
+			gitAction := menuCommit.Display()
+			if gitAction != "no" {
+				choices.commitAndPush(gitAction, *dryrunFlag)
 			}
 		default:
 			fmt.Println("No valid flag provided. Use -init to create a configuration file or -commit (-dryrun) create a conventional commit.")
